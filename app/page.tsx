@@ -1,5 +1,5 @@
-import { StockPilotDashboard } from "../components/stockpilot-dashboard";
+import { redirect } from "next/navigation";
 
 export default function Home() {
-  return <StockPilotDashboard />;
+  redirect("/dashboard");
 }
