@@ -1,10 +1,10 @@
 import { StockPilotShell } from "../../components/stockpilot-shell";
 import {
   aiSummary,
+  cafeLocations,
   initialProducts,
   inventoryValue,
   lowStockProducts,
-  pagePlan,
   topSeller,
   totalUnits,
 } from "../../lib/stockpilot-data";
@@ -12,9 +12,9 @@ import {
 export default function DashboardPage() {
   return (
     <StockPilotShell
-      eyebrow="Dashboard Home"
-      title="Core inventory visibility for operators, founders, and supply teams."
-      description="This dashboard route anchors the MVP: health metrics, low-stock pressure, AI guidance, and a clear path into the deeper operational pages."
+      eyebrow="Operations Dashboard"
+      title="Coffee inventory command center across stores, suppliers, and replenishment cycles."
+      description="Monitor stock health, regional store performance, and replenishment risk across the coffee program from one operating view."
     >
       <section className="section">
         <div className="stats-grid">
@@ -44,21 +44,27 @@ export default function DashboardPage() {
       <section className="section two-column">
         <div className="card">
           <div className="section-heading">
-            <p className="eyebrow">Snapshot</p>
-            <h2>What the operator sees first</h2>
+            <p className="eyebrow">Executive Snapshot</p>
+            <h2>Network summary</h2>
           </div>
           <p className="feature-copy">{aiSummary}</p>
         </div>
         <div className="card">
           <div className="section-heading">
-            <p className="eyebrow">Route Map</p>
-            <h2>MVP pages now split into real routes</h2>
+            <p className="eyebrow">Store Coverage</p>
+            <h2>Regional cafe readiness</h2>
           </div>
-          <ul className="route-list">
-            {pagePlan.map((page) => (
-              <li key={page}>{page}</li>
+          <div className="service-list">
+            {cafeLocations.map((location) => (
+              <div key={location.id} className="service-row">
+                <strong>{location.name}</strong>
+                <span>
+                  {location.region} · {location.manager} · Fill rate {location.fillRate} ·{" "}
+                  {location.status}
+                </span>
+              </div>
             ))}
-          </ul>
+          </div>
         </div>
       </section>
 
@@ -66,14 +72,15 @@ export default function DashboardPage() {
         <div className="card">
           <div className="section-heading">
             <p className="eyebrow">Priority Products</p>
-            <h2>Low-stock products requiring action</h2>
+            <h2>Low-stock products requiring replenishment</h2>
           </div>
           <div className="recommendations">
             {lowStockProducts.map((product) => (
               <div key={product.id} className="recommendation-row">
                 <strong>{product.name}</strong>
                 <span>
-                  {product.quantity} on hand, reorder threshold {product.reorderPoint}
+                  {product.quantity} on hand, reorder threshold {product.reorderPoint}, supplier{" "}
+                  {product.supplier}
                 </span>
               </div>
             ))}

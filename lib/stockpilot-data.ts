@@ -17,6 +17,23 @@ export type UploadRecord = {
   status: string;
 };
 
+export type CafeLocation = {
+  id: number;
+  name: string;
+  region: string;
+  manager: string;
+  fillRate: string;
+  status: string;
+};
+
+export type SupplierStatus = {
+  id: number;
+  supplier: string;
+  eta: string;
+  lane: string;
+  status: string;
+};
+
 export const initialProducts: Product[] = [
   {
     id: 1,
@@ -65,30 +82,61 @@ export const initialProducts: Product[] = [
 ];
 
 export const uploadHistory: UploadRecord[] = [
-  { id: 1, name: "April inventory.csv", source: "CSV import", status: "Processed" },
-  { id: 2, name: "supplier-receipt.jpg", source: "Receipt scan", status: "Textract parsed" },
-  { id: 3, name: "warehouse-shelf.png", source: "Stock screenshot", status: "Queued" },
+  { id: 1, name: "SoHo Cafe weekly count.csv", source: "Store inventory upload", status: "Processed" },
+  { id: 2, name: "BluePort invoice 4421.jpg", source: "Roaster invoice scan", status: "Parsed" },
+  { id: 3, name: "Midtown shelf audit.png", source: "Store floor audit", status: "Queued" },
 ];
 
-export const awsServices = [
-  ["S3", "Store PDFs, images, CSVs, receipts, and upload artifacts."],
-  ["Lambda", "Trigger parsing, clean incoming data, and create events."],
-  ["API Gateway", "Connect the dashboard frontend to backend workflows."],
-  ["DynamoDB / RDS", "Persist products, suppliers, stock events, and reports."],
-  ["Textract", "Read receipts, screenshots, PDFs, and supplier forms."],
-  ["Bedrock / OpenAI API", "Generate summaries, demand insights, and reorder guidance."],
-  ["CloudWatch", "Track logs, failures, and upload-processing health."],
-  ["IAM", "Lock down roles, permissions, and service boundaries."],
+export const cafeLocations: CafeLocation[] = [
+  {
+    id: 1,
+    name: "SoHo Flagship",
+    region: "New York City",
+    manager: "Maya Brooks",
+    fillRate: "96.4%",
+    status: "Stable",
+  },
+  {
+    id: 2,
+    name: "River North",
+    region: "Chicago",
+    manager: "Daniel Kim",
+    fillRate: "91.8%",
+    status: "Watchlist",
+  },
+  {
+    id: 3,
+    name: "Capitol Hill",
+    region: "Seattle",
+    manager: "Jordan Ellis",
+    fillRate: "97.2%",
+    status: "Stable",
+  },
 ] as const;
 
-export const pagePlan = [
-  "Dashboard Home",
-  "Inventory Page",
-  "Upload Center",
-  "Analytics Page",
-  "AI Report Page",
-  "Order Form Page",
-];
+export const supplierStatuses: SupplierStatus[] = [
+  {
+    id: 1,
+    supplier: "BluePort Roasters",
+    eta: "May 8",
+    lane: "LTL / refrigerated",
+    status: "Confirmed",
+  },
+  {
+    id: 2,
+    supplier: "NorthPeak Supply",
+    eta: "May 9",
+    lane: "Ground",
+    status: "Pending approval",
+  },
+  {
+    id: 3,
+    supplier: "Sweetline Foods",
+    eta: "May 11",
+    lane: "Regional freight",
+    status: "Scheduled",
+  },
+] as const;
 
 export const lowStockProducts = initialProducts.filter(
   (product) => product.quantity <= product.reorderPoint,
@@ -110,4 +158,4 @@ export const aiSummary = `Low-stock pressure is centered on ${lowStockProducts
   .map((product) => product.name)
   .join(", ")}. ${topSeller.name} is the fastest mover at ${
   topSeller.velocity
-} units sold this month. Prioritize a reorder batch for ${lowStockProducts.length} products before the next weekly cycle.`;
+} units sold this month. Prioritize a replenishment batch for ${lowStockProducts.length} products before Friday's inter-store transfer window.`;

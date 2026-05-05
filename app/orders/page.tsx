@@ -1,18 +1,18 @@
 import { StockPilotShell } from "../../components/stockpilot-shell";
-import { awsServices, lowStockProducts } from "../../lib/stockpilot-data";
+import { lowStockProducts, supplierStatuses } from "../../lib/stockpilot-data";
 
 export default function OrdersPage() {
   return (
     <StockPilotShell
-      eyebrow="Order Form Page"
-      title="Prepare supplier-ready reorder drafts from inventory risk."
-      description="This route packages the AI reorder outcome into a supplier workflow and keeps the supporting AWS architecture visible during demos."
+      eyebrow="Order Center"
+      title="Prepare supplier-ready replenishment drafts from live inventory pressure."
+      description="Coordinate purchase requests, vendor confirmations, and inbound timing for the next coffee replenishment cycle."
     >
       <section className="section two-column">
         <div className="card">
           <div className="section-heading">
             <p className="eyebrow">Supplier Draft</p>
-            <h2>AI-generated order form</h2>
+            <h2>Recommended purchase orders</h2>
           </div>
           <div className="order-draft">
             {lowStockProducts.map((product) => (
@@ -28,14 +28,16 @@ export default function OrdersPage() {
 
         <div className="card">
           <div className="section-heading">
-            <p className="eyebrow">AWS Services</p>
-            <h2>Production services this project can use</h2>
+            <p className="eyebrow">Inbound Status</p>
+            <h2>Supplier and freight updates</h2>
           </div>
           <div className="service-list">
-            {awsServices.map(([service, description]) => (
-              <div key={service} className="service-row">
-                <strong>{service}</strong>
-                <span>{description}</span>
+            {supplierStatuses.map((supplier) => (
+              <div key={supplier.id} className="service-row">
+                <strong>{supplier.supplier}</strong>
+                <span>
+                  ETA {supplier.eta} · {supplier.lane} · {supplier.status}
+                </span>
               </div>
             ))}
           </div>

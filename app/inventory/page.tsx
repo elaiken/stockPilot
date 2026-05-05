@@ -4,9 +4,9 @@ import { StockPilotShell } from "../../components/stockpilot-shell";
 export default function InventoryPage() {
   return (
     <StockPilotShell
-      eyebrow="Inventory Page"
-      title="Manage product records, thresholds, and operational stock changes."
-      description="This route focuses on the most hands-on workflow in the MVP: adding products, adjusting quantities, and tracking supplier-linked inventory risk."
+      eyebrow="Inventory"
+      title="Manage coffee products, reorder thresholds, and stock movement."
+      description="Keep store and warehouse counts current across beans, bottled drinks, cups, and syrups with fast operational updates."
     >
       <StockPilotInventoryManager />
     </StockPilotShell>

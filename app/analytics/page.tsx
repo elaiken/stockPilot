@@ -4,9 +4,9 @@ import { initialProducts, inventoryValue, topSeller, totalReturns } from "../../
 export default function AnalyticsPage() {
   return (
     <StockPilotShell
-      eyebrow="Analytics Page"
-      title="Surface demand patterns, returns, and profit opportunity."
-      description="This route frames the operational metrics that turn raw stock data into business decisions for supply teams and owners."
+      eyebrow="Analytics"
+      title="Surface demand patterns, returns, and margin opportunity."
+      description="Track which coffee products are moving fastest, which stores are generating waste, and where margin can improve."
     >
       <section className="section">
         <div className="analytics-grid">

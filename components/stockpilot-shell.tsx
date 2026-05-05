@@ -36,7 +36,7 @@ export function StockPilotShell({
       <header className="hero">
         <nav className="topbar">
           <div>
-            <p className="eyebrow">A.I. Inventory Dashboard</p>
+            <p className="eyebrow">Enterprise Coffee Inventory</p>
             <h1>StockPilot</h1>
           </div>
           <div className="nav-links">

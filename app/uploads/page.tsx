@@ -5,8 +5,8 @@ export default function UploadsPage() {
   return (
     <StockPilotShell
       eyebrow="Upload Center"
-      title="Ingest CSVs, screenshots, receipts, and supplier documents."
-      description="This route demonstrates the intake workflow that later maps directly to S3 storage, Lambda processing, and Textract extraction."
+      title="Ingest store counts, invoices, shelf audits, and receiving records."
+      description="Centralize coffee inventory files from stores and suppliers so operators can reconcile counts and track inbound product faster."
     >
       <section className="section two-column">
         <div className="card upload-dropzone">

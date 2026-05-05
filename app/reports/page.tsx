@@ -4,9 +4,9 @@ import { aiSummary, lowStockProducts } from "../../lib/stockpilot-data";
 export default function ReportsPage() {
   return (
     <StockPilotShell
-      eyebrow="AI Report Page"
-      title="Translate inventory state into natural-language business guidance."
-      description="This route shows how StockPilot converts stock levels and velocity into a readable operating summary and reorder recommendations."
+      eyebrow="AI Report"
+      title="Translate inventory signals into clear operating guidance."
+      description="Generate concise replenishment and product-mix recommendations from current stock pressure and sales velocity."
     >
       <section className="section two-column">
         <div className="card report-card">
