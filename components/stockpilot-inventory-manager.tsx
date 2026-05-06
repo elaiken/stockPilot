@@ -65,22 +65,25 @@ export function StockPilotInventoryManager() {
     setProducts((current) => current.filter((product) => product.id !== id));
   };
 
+  const getStockTone = (product: Product) =>
+    product.quantity <= product.reorderPoint ? "badge-warn" : "badge-ok";
+
   return (
     <>
       <section className="section">
         <div className="stats-grid stats-grid-three">
           <article className="stat-card card">
-            <span>Total products</span>
+            <span>KPI · Active SKUs</span>
             <strong>{products.length}</strong>
             <small>Active SKUs currently tracked</small>
           </article>
           <article className="stat-card card warn">
-            <span>Low-stock alerts</span>
+            <span>KPI · Low-stock alerts</span>
             <strong>{lowStock.length}</strong>
             <small>Items currently below threshold</small>
           </article>
           <article className="stat-card card">
-            <span>Suppliers covered</span>
+            <span>KPI · Suppliers covered</span>
             <strong>{new Set(products.map((product) => product.supplier)).size}</strong>
             <small>Supplier relationships represented</small>
           </article>
@@ -170,7 +173,9 @@ export function StockPilotInventoryManager() {
             <thead>
               <tr>
                 <th>Product</th>
+                <th>Status</th>
                 <th>Qty</th>
+                <th>Value</th>
                 <th>Supplier</th>
                 <th>Actions</th>
               </tr>
@@ -183,9 +188,15 @@ export function StockPilotInventoryManager() {
                     <span>{product.sku}</span>
                   </td>
                   <td>
+                    <span className={`badge ${getStockTone(product)}`}>
+                      {product.quantity <= product.reorderPoint ? "Reorder" : "Healthy"}
+                    </span>
+                  </td>
+                  <td>
                     <strong>{product.quantity}</strong>
                     <span>Reorder at {product.reorderPoint}</span>
                   </td>
+                  <td>${(product.quantity * product.price).toLocaleString()}</td>
                   <td>{product.supplier}</td>
                   <td>
                     <div className="action-row">

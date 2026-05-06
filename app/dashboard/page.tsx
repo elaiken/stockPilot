@@ -9,6 +9,14 @@ import {
   totalUnits,
 } from "../../lib/stockpilot-data";
 
+function getStatusTone(status: string) {
+  const normalized = status.toLowerCase();
+  if (normalized.includes("watch") || normalized.includes("risk")) {
+    return "badge-warn";
+  }
+  return "badge-ok";
+}
+
 export default function DashboardPage() {
   return (
     <StockPilotShell
@@ -19,24 +27,24 @@ export default function DashboardPage() {
       <section className="section">
         <div className="stats-grid">
           <article className="stat-card card">
-            <span>Total products</span>
+            <span>KPI · Active products</span>
             <strong>{initialProducts.length}</strong>
-            <small>{totalUnits} units tracked</small>
+            <small>{totalUnits} units across stores and reserve stock</small>
           </article>
           <article className="stat-card card warn">
-            <span>Low-stock alerts</span>
+            <span>KPI · Low-stock alerts</span>
             <strong>{lowStockProducts.length}</strong>
-            <small>Products at or below reorder point</small>
+            <small>Items at or below replenishment threshold</small>
           </article>
           <article className="stat-card card">
-            <span>Inventory value</span>
+            <span>KPI · Inventory value</span>
             <strong>${inventoryValue.toLocaleString()}</strong>
-            <small>Current on-hand estimate</small>
+            <small>Estimated on-hand retail replacement value</small>
           </article>
           <article className="stat-card card accent">
-            <span>AI recommendation</span>
+            <span>KPI · Fastest mover</span>
             <strong>{topSeller.name}</strong>
-            <small>Restock this top mover first</small>
+            <small>{topSeller.velocity} units sold this month</small>
           </article>
         </div>
       </section>
@@ -54,36 +62,82 @@ export default function DashboardPage() {
             <p className="eyebrow">Store Coverage</p>
             <h2>Regional cafe readiness</h2>
           </div>
-          <div className="service-list">
-            {cafeLocations.map((location) => (
-              <div key={location.id} className="service-row">
-                <strong>{location.name}</strong>
-                <span>
-                  {location.region} · {location.manager} · Fill rate {location.fillRate} ·{" "}
-                  {location.status}
-                </span>
-              </div>
-            ))}
-          </div>
+          <table className="inventory-table compact-table">
+            <thead>
+              <tr>
+                <th>Store</th>
+                <th>Manager</th>
+                <th>Fill rate</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {cafeLocations.map((location) => (
+                <tr key={location.id}>
+                  <td>
+                    <strong>{location.name}</strong>
+                    <span>{location.region}</span>
+                  </td>
+                  <td>{location.manager}</td>
+                  <td>{location.fillRate}</td>
+                  <td>
+                    <span className={`badge ${getStatusTone(location.status)}`}>{location.status}</span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </section>
 
-      <section className="section">
+      <section className="section two-column">
         <div className="card">
           <div className="section-heading">
             <p className="eyebrow">Priority Products</p>
             <h2>Low-stock products requiring replenishment</h2>
           </div>
+          <table className="inventory-table compact-table">
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th>On hand</th>
+                <th>Threshold</th>
+                <th>Supplier</th>
+              </tr>
+            </thead>
+            <tbody>
+              {lowStockProducts.map((product) => (
+                <tr key={product.id}>
+                  <td>
+                    <strong>{product.name}</strong>
+                    <span>{product.sku}</span>
+                  </td>
+                  <td>{product.quantity}</td>
+                  <td>{product.reorderPoint}</td>
+                  <td>{product.supplier}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <div className="card">
+          <div className="section-heading">
+            <p className="eyebrow">Action Queue</p>
+            <h2>Recommended next steps</h2>
+          </div>
           <div className="recommendations">
-            {lowStockProducts.map((product) => (
-              <div key={product.id} className="recommendation-row">
-                <strong>{product.name}</strong>
-                <span>
-                  {product.quantity} on hand, reorder threshold {product.reorderPoint}, supplier{" "}
-                  {product.supplier}
-                </span>
-              </div>
-            ))}
+            <div className="recommendation-row">
+              <strong>Approve BluePort replenishment</strong>
+              <span>Espresso Beans 2lb should be released before Thursday cutoff.</span>
+            </div>
+            <div className="recommendation-row">
+              <strong>Redistribute thermal cups</strong>
+              <span>Move reserve cartons from Seattle to Chicago to protect weekend demand.</span>
+            </div>
+            <div className="recommendation-row">
+              <strong>Audit bottled cold brew counts</strong>
+              <span>River North has the highest weekly variance against submitted shelf audits.</span>
+            </div>
           </div>
         </div>
       </section>
